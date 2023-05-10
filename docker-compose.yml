@@ -1,17 +1,26 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  fleetmanagement:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: myuser/fleetmanagement:latest
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+  grafana:
+    image: grafana/grafana:latest
     ports:
-      - "5100:80"
+      - "3000:3000"
     networks:
       - default
+
+  worker:
+    image: braunerr/service-worker:latest
+    container_name: planning
+    environment:
+      - HostnameRabbit=rabbitmq-dev
+    ports:
+      - "8000:80"
+    networks:
+      - default
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   mongodb:
     image: mongo:latest
@@ -25,6 +34,21 @@ services:
     - mongodb_data_container:/data/db
     networks:
       - default
+
+  rabbitmq:
+    image: rabbitmq:management
+    hostname: "rabbitmq-dev"
+    container_name: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    networks:
+      - default
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 10s
+      retries: 5
 
 volumes:
     mongodb_data_container:
