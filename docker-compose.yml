@@ -22,19 +22,6 @@ services:
       rabbitmq:
         condition: service_healthy
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: 1234
-    ports:
-    - 27018:27017
-    volumes:
-    - mongodb_data_container:/data/db
-    networks:
-      - default
-
   rabbitmq:
     image: rabbitmq:management
     hostname: "rabbitmq-dev"
