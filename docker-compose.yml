@@ -9,7 +9,7 @@ services:
       - default
 
   worker:
-    image: braunerr/service-worker:latest
+    image: braunerr/service-worker:latest-dev
     container_name: planning
     environment:
       - HostnameRabbit=rabbitmq-dev
