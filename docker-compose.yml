@@ -8,6 +8,21 @@ services:
     networks:
       - default
 
+  auth:
+    image: braunerr/authservice:latest-dev
+    container_name: auth
+    environment:
+      - Secret=secret
+      - Issuer=issuer
+    ports:
+      - "8002:80"
+    networks:
+      - default
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   auctions:
     image: braunerr/auctionservice:latest-dev
     container_name: auctions
