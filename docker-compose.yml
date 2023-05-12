@@ -8,9 +8,23 @@ services:
     networks:
       - default
 
+  auctions:
+    image: braunerr/auctionservice:latest-dev
+    container_name: auctions
+    environment:
+      - HostnameRabbit=rabbitmq-dev
+    ports:
+      - "8001:80"
+    networks:
+      - default
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   worker:
     image: braunerr/service-worker:latest-dev
-    container_name: planning
+    container_name: worker
     environment:
       - HostnameRabbit=rabbitmq-dev
     ports:
