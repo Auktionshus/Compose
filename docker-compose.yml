@@ -1,5 +1,8 @@
 version: '3.9'
 
+networks:
+  loki:
+
 services:
   loki:
     image: grafana/loki
@@ -7,14 +10,27 @@ services:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
     networks:
-      - default
+      - loki
       
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
     networks:
+      - loki
+
+  blazor:
+    image: braunerr/blazor:latest-dev
+    container_name: blazor
+    ports:
+      - "5000:80"
+    networks:
       - default
+    depends_on:
+      - auth
+      - auctions
+      - worker
+      - rabbitmq
 
   auth:
     image: braunerr/authservice:latest-dev
@@ -79,5 +95,6 @@ volumes:
     images_data:
         external: false
 networks:
+  -loki
   default:
     driver: bridge
