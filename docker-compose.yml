@@ -1,8 +1,5 @@
 version: '3.9'
 
-networks:
-  loki:
-
 services:
   loki:
     image: grafana/loki
@@ -90,11 +87,8 @@ services:
       timeout: 10s
       retries: 5
 
-volumes:
-    mongodb_data_container:
-    images_data:
-        external: false
 networks:
-  -loki
+  loki:
+    driver: bridge
   default:
     driver: bridge
