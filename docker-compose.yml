@@ -7,14 +7,14 @@ services:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
     networks:
-      - loki
+      - default
       
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3000:3000"
     networks:
-      - loki
+      - default
 
   blazor:
     image: braunerr/blazor:latest-dev
@@ -37,6 +37,34 @@ services:
       - Issuer=issuer
     ports:
       - "8002:80"
+    networks:
+      - default
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  bids:
+    image: braunerr/bidservice:latest-dev
+    container_name: bids
+    environment:
+      - HostnameRabbit=rabbitmq-dev
+    ports:
+      - "8003:80"
+    networks:
+      - default
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  item:
+    image: braunerr/itemservice:latest-dev
+    container_name: items
+    environment:
+      - HostnameRabbit=rabbitmq-dev
+    ports:
+      - "8004:80"
     networks:
       - default
     restart: on-failure
@@ -88,7 +116,5 @@ services:
       retries: 5
 
 networks:
-  loki:
-    driver: bridge
   default:
     driver: bridge
