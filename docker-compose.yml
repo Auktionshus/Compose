@@ -1,16 +1,15 @@
 version: "3.9"
 
 services:
-  lb-test-svc:
-    image: loadbalancer:latest
-    expose:
-      - "80"
+ 
   nginx:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    depends_on:
-      - lb-test-svc
+    # depends_on:
+    #   - auctions
+    #   - item
+    #   - bids
     ports:
       - "4000:4000"
 
@@ -29,94 +28,123 @@ services:
     networks:
       - default
 
-  blazor:
-    image: braunerr/blazor:latest-dev
-    container_name: blazor
-    ports:
-      - "5000:80"
-    networks:
-      - default
-    depends_on:
-      - auth
-      - auctions
-      - worker
-      - rabbitmq
+  # blazor:
+  #   image: braunerr/blazor:latest-dev
+  #   container_name: blazor
+  #   ports:
+  #     - "5000:80"
+  #   networks:
+  #     - default
+  #   depends_on:
+  #     - auth
+  #     - auctions
+  #     - worker
+  #     - rabbitmq
 
-  auth:
-    image: braunerr/authservice:latest-dev
-    container_name: auth
-    environment:
-      - Secret=secret
-      - Issuer=issuer
-    ports:
-      - "8002:80"
-    networks:
-      - default
-    restart: on-failure
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+  # auth:
+  #   image: braunerr/authservice:latest-dev
+  #   container_name: auth
+  #   environment:
+  #     - Secret=secret
+  #     - Issuer=issuer
+  #   ports:
+  #     - "8002:80"
+  #   networks:
+  #     - default
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
 
-  bids:
-    image: braunerr/bidservice:latest-dev
-    container_name: bids
-    environment:
-      - HostnameRabbit=rabbitmq-dev
-    ports:
-      - "8003:80"
-    networks:
-      - default
-    restart: on-failure
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+  # bids:
+  #   image: braunerr/bidservice:latest-dev
+  #   container_name: bids
+  #   environment:
+  #     - HostnameRabbit=rabbitmq-dev
+  #   ports:
+  #     - "8003:80"
+  #   networks:
+  #     - default
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
 
-  item:
-    image: braunerr/itemservice:latest-dev
-    container_name: items
-    environment:
-      - HostnameRabbit=rabbitmq-dev
-    ports:
-      - "8004:80"
-    networks:
-      - default
-    restart: on-failure
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+  # item:
+  #   image: braunerr/itemservice:latest-dev
+  #   container_name: items
+  #   environment:
+  #     - HostnameRabbit=rabbitmq-dev
+  #   ports:
+  #     - "8004:80"
+  #   networks:
+  #     - default
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
 
-  auctions:
-    image: braunerr/auctionservice:latest-dev
-    container_name: auctions
-    environment:
-      - HostnameRabbit=rabbitmq-dev
-    ports:
-      - "8001:80"
-    networks:
-      - default
-    restart: on-failure
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+  # auctions:
+  #   image: braunerr/auctionservice:latest-dev
+  #   container_name: auctions
+  #   environment:
+  #     - HostnameRabbit=rabbitmq-dev
+  #   ports:
+  #     - "8001:80"
+  #   networks:
+  #     - default
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
 
-  worker:
-    image: braunerr/service-worker:latest-dev
-    container_name: worker
-    environment:
-      - HostnameRabbit=rabbitmq-dev
-    ports:
-      - "8000:80"
-    networks:
-      - default
-    restart: on-failure
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+   # users:
+  #   image: braunerr/userservice:latest-dev
+  #   container_name: users
+  #   environment:
+  #     - HostnameRabbit=rabbitmq-dev
+  #   ports:
+  #     - "8001:80"
+  #   networks:
+  #     - default
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+  
+  # messages:
+  #   image: braunerr/messageservice:latest-dev
+  #   container_name: messages
+  #   environment:
+  #     - HostnameRabbit=rabbitmq-dev
+  #   ports:
+  #     - "8001:80"
+  #   networks:
+  #     - default
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
+
+
+  # worker:
+  #   image: braunerr/service-worker:latest-dev
+  #   container_name: worker
+  #   environment:
+  #     - HostnameRabbit=rabbitmq-dev
+  #   ports:
+  #     - "8000:80"
+  #   networks:
+  #     - default
+  #   restart: on-failure
+  #   depends_on:
+  #     rabbitmq:
+  #       condition: service_healthy
 
   rabbitmq:
     image: rabbitmq:management
     hostname: "rabbitmq-dev"
-    container_name: rabbitmq
+    
     ports:
       - "15672:15672"
       - "5672:5672"
