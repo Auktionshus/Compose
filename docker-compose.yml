@@ -53,7 +53,7 @@ services:
       - Secret=secret
       - Issuer=issuer
     ports:
-      - "8002:80"
+      - "8000:80"
     networks:
       - default
     restart: on-failure
@@ -67,7 +67,7 @@ services:
     environment:
       - HostnameRabbit=rabbitmq-dev
     ports:
-      - "8003:80"
+      - "8001:80"
     networks:
       - default
     restart: on-failure
@@ -81,7 +81,7 @@ services:
     environment:
       - HostnameRabbit=rabbitmq-dev
     ports:
-      - "8004:80"
+      - "8002:80"
     networks:
       - default
     restart: on-failure
@@ -96,7 +96,7 @@ services:
       - HostnameRabbit=rabbitmq-dev
       - MongoDbConnectionString=mongodb+srv://GroenOlsen:BhvQmiihJWiurl2V@auktionshusgo.yzctdhc.mongodb.net/?retryWrites=true&w=majority
     ports:
-      - "8001:80"
+      - "8003:80"
     networks:
       - default
     restart: on-failure
@@ -110,7 +110,7 @@ services:
    environment:
      - HostnameRabbit=rabbitmq-dev
    ports:
-     - "8001:80"
+     - "8004:80"
    networks:
      - default
    restart: on-failure
@@ -125,7 +125,7 @@ services:
       - HostnameRabbit=rabbitmq-dev
       - MongoDbConnectionString=mongodb+srv://GroenOlsen:BhvQmiihJWiurl2V@auktionshusgo.yzctdhc.mongodb.net/?retryWrites=true&w=majority
     ports:
-      - "8000:80"
+      - "8005:80"
     networks:
       - default
     restart: on-failure
