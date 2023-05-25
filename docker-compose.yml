@@ -75,25 +75,26 @@ services:
       rabbitmq:
         condition: service_healthy
 
-  # item:
-  #   image: braunerr/itemservice:latest-dev
-  #   container_name: items
-  #   environment:
-  #     - HostnameRabbit=rabbitmq-dev
-  #   ports:
-  #     - "8004:80"
-  #   networks:
-  #     - default
-  #   restart: on-failure
-  #   depends_on:
-  #     rabbitmq:
-  #       condition: service_healthy
+  item:
+    image: braunerr/itemservice:latest-dev
+    container_name: items
+    environment:
+      - HostnameRabbit=rabbitmq-dev
+    ports:
+      - "8004:80"
+    networks:
+      - default
+    restart: on-failure
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
 
   auctions:
     image: braunerr/auctionservice:latest-dev
     container_name: auctions
     environment:
       - HostnameRabbit=rabbitmq-dev
+      - MongoDbConnectionString=mongodb+srv://GroenOlsen:BhvQmiihJWiurl2V@auktionshusgo.yzctdhc.mongodb.net/?retryWrites=true&w=majority
     ports:
       - "8001:80"
     networks:
@@ -103,40 +104,26 @@ services:
       rabbitmq:
         condition: service_healthy
 
-   # users:
-  #   image: braunerr/userservice:latest-dev
-  #   container_name: users
-  #   environment:
-  #     - HostnameRabbit=rabbitmq-dev
-  #   ports:
-  #     - "8001:80"
-  #   networks:
-  #     - default
-  #   restart: on-failure
-  #   depends_on:
-  #     rabbitmq:
-  #       condition: service_healthy
-  
-  # messages:
-  #   image: braunerr/messageservice:latest-dev
-  #   container_name: messages
-  #   environment:
-  #     - HostnameRabbit=rabbitmq-dev
-  #   ports:
-  #     - "8001:80"
-  #   networks:
-  #     - default
-  #   restart: on-failure
-  #   depends_on:
-  #     rabbitmq:
-  #       condition: service_healthy
-
+  users:
+   image: braunerr/userservice:latest-dev
+   container_name: users
+   environment:
+     - HostnameRabbit=rabbitmq-dev
+   ports:
+     - "8001:80"
+   networks:
+     - default
+   restart: on-failure
+   depends_on:
+     rabbitmq:
+       condition: service_healthy
 
   worker:
     image: braunerr/service-worker:latest-dev
     container_name: worker
     environment:
       - HostnameRabbit=rabbitmq-dev
+      - MongoDbConnectionString=mongodb+srv://GroenOlsen:BhvQmiihJWiurl2V@auktionshusgo.yzctdhc.mongodb.net/?retryWrites=true&w=majority
     ports:
       - "8000:80"
     networks:
