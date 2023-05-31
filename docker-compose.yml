@@ -16,10 +16,11 @@ services:
     image: hashicorp/vault:latest
     restart: 
       on-failure:10
+    hostname: vault-dev
     ports:
       - "8201:8201"
     environment:
-      VAULT_ADDR: 'http://0.0.0.0:8201'
+      VAULT_ADDR: 'https://localhost:8201'
       VAULT_LOCAL_CONFIG: '{"listener": [{"tcp":{"address":"0.0.0.0:8201","tls_disable":"0", "tls_cert_file":"/data/cert.pem","tls_key_file":"/data/key.pem"}}],"default_lease_ttl": "168h","max_lease_ttl": "720h"}, "ui": true}'
       VAULT_DEV_ROOT_TOKEN_ID: '00000000-0000-0000-0000-000000000000'
       VAULT_TOKEN: '00000000-0000-0000-0000-000000000000'
@@ -27,11 +28,24 @@ services:
       - IPC_LOCK
     volumes:
       - ./vault-volume:/data
+      - ./fill.sh:/fill.sh
     healthcheck:
       retries: 5
     networks:
       - default
     command: server -dev -dev-root-token-id="00000000-0000-0000-0000-000000000000"
+  
+  script:
+    image: hashicorp/vault:latest
+    command: sh "/app/vault_data.sh"
+    depends_on:
+      - vault_dev
+    healthcheck:
+      retries: 5
+    networks:
+      - default
+    volumes:
+      - ./vault_data.sh:/app/vault_data.sh
 
   loki:
     image: grafana/loki
