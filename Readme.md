@@ -11,3 +11,14 @@ We have issues with the script not always working when pulling from GitHub, if t
 4. now create another path for secret called "JWT" add 2 secrets the first key should be "Secret" with value "266BABE7C9DB9A34A7EB26E867FB2CA8833303E2CE6AAF28F6DDF04950718141"
 5. the second key should be "Issuer" with value "issuer"
 6. Restart the services not running if they dont do it themselves
+
+## Json Example
+### mongoSecrets
+{
+  "ConnectionString": "mongodb+srv://GroenOlsen:BhvQmiihJWiurl2V@auktionshusgo.yzctdhc.mongodb.net/?retryWrites=true&w=majority"
+}
+### JWT
+{
+  "Issuer": "issuer",
+  "Secret": "266BABE7C9DB9A34A7EB26E867FB2CA8833303E2CE6AAF28F6DDF04950718141"
+}
