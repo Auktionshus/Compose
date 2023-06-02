@@ -8,6 +8,6 @@ We have issues with the script not always working when pulling from GitHub, if t
 1. Open Vault with https://localhost:8201/ in the browser
 2. Login with 00000000-0000-0000-0000-000000000000 As the token
 3. In secret create new secret with path "mongoSecrets", key should be "ConnectionString" and the value "mongodb+srv://GroenOlsen:BhvQmiihJWiurl2V@auktionshusgo.yzctdhc.mongodb.net/?retryWrites=true&w=majority"
-4. now create a new path called "JWT" add 2 secrets the first key should be "Secret" with value "266BABE7C9DB9A34A7EB26E867FB2CA8833303E2CE6AAF28F6DDF04950718141"
+4. now create another path for secret called "JWT" add 2 secrets the first key should be "Secret" with value "266BABE7C9DB9A34A7EB26E867FB2CA8833303E2CE6AAF28F6DDF04950718141"
 5. the second key should be "Issuer" with value "issuer"
 6. Restart the services not running if they dont do it themselves
